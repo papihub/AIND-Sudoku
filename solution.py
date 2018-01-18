@@ -366,8 +366,8 @@ def search(values):
         elif(l < min_l and l > 2):
             min_l = l
             min_b = b
-    print("Ready to guess: b: "+b)
-    display(new_values)
+    #print("Ready to guess: b: "+b)
+    #display(new_values)
     
     for x in new_values[min_b]:
         guess_values = deepcopy(new_values)
