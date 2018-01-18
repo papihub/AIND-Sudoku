@@ -49,6 +49,52 @@ def naked_twins(values):
 
     my_values = deepcopy(values)
     #display(values)
+    for u in unitlist:
+        for a in u:
+            if len(my_values[a]) != 2:
+                continue
+            for b in u:
+                if my_values[a] == my_values[b] and a != b:
+                    for c in set(u) - set([a,b]):
+                        my_values[c] = my_values[c].translate(str.maketrans('','',my_values[b]))
+                
+                                    
+    return my_values
+    # TODO: Implement this function!
+    raise NotImplementedError
+
+def naked_twins_superior(values):
+    """Eliminate values using the naked twins strategy.
+
+    Parameters
+    ----------
+    values(dict)
+        a dictionary of the form {'box_name': '123456789', ...}
+
+    Returns
+    -------
+    dict
+        The values dictionary with the naked twins eliminated from peers
+
+    Notes
+    -----
+    Your solution can either process all pairs of naked twins from the input once,
+    or it can continue processing pairs of naked twins until there are no such
+    pairs remaining -- the project assistant test suite will accept either
+    convention. However, it will not accept code that does not process all pairs
+    of naked twins from the original input. (For example, if you start processing
+    pairs of twins and eliminate another pair of twins before the second pair
+    is processed then your code will fail the PA test suite.)
+
+    The first convention is preferred for consistency with the other strategies,
+    and because it is simpler (since the reduce_puzzle function already calls this
+    strategy repeatedly).
+    """
+    if ( not values ):
+        return values
+
+    my_values = deepcopy(values)
+    #display(values)
 
     board_changed=1
     while(board_changed):
@@ -70,13 +116,13 @@ def naked_twins(values):
                         for b in occurs[i]:
                             if(len(my_values[b]) != 2):
                                 my_values[b] = i+j
-                                #print("set ", b, " to ", i+j, u)
+                                print("set ", b, " to ", i+j, u)
                                 board_changed = 1
                         for b in set(u) - occurs[i]:
                             if i in my_values[b] or j in my_values[b]:
                                 my_values[b] = my_values[b].translate(str.maketrans('','',i+j))
                                 board_changed = 1
-                                #print("removed ", i+j, " from ", b, u)
+                                print("removed ", i+j, " from ", b, u)
                         x_rem.add(i)
                         x_rem.add(j)
             occurs = dict((s,set()) for s in '123456789' )
@@ -96,8 +142,8 @@ def naked_twins(values):
                             x |= occurs[s]
                         x.discard(i)
                         x.discard(j)
-                        #if(len(x)>0):
-                        #    print("removing ", my_values[i], " from ", x, u)
+                        if(len(x)>0):
+                            print("removing ", my_values[i], " from ", x, u)
                         for b in x:
                             my_values[b] = my_values[b].translate(str.maketrans('','',my_values[i]))
                             board_changed = 2
@@ -357,8 +403,8 @@ def solve(grid):
 if __name__ == "__main__":
     #diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
     #diag_sudoku_grid = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-    #diag_sudoku_grid = '9.1....8.8.5.7..4.2.4....6...7......5..............83.3..6......9................'
-    diag_sudoku_grid='........4......1.....6......7....2.8...372.4.......3.7......4......5.6....4....2.'
+    diag_sudoku_grid = '9.1....8.8.5.7..4.2.4....6...7......5..............83.3..6......9................'
+    #diag_sudoku_grid='........4......1.....6......7....2.8...372.4.......3.7......4......5.6....4....2.'
     display(grid2values(diag_sudoku_grid))
     result = solve(diag_sudoku_grid)
     display(result)
